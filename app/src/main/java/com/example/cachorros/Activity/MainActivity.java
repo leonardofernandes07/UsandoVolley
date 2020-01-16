@@ -3,12 +3,18 @@ package com.example.cachorros.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -25,9 +31,12 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
+import java.security.Key;
 import java.util.ArrayList;
+import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Filterable {
 
     private final String url = "https://dog.ceo/api/breeds/list";
     private ArrayList<String> racas;
@@ -36,17 +45,51 @@ public class MainActivity extends AppCompatActivity {
     private String raca;
     private final int SUB_RACA = 2222;
     private Intent in;
+    private ArrayAdapter<String> adapter;
+    private ArrayList<String> listaFiltrada = new ArrayList<>();
+
+    private EditText tvPesquisar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+
+        tvPesquisar = findViewById(R.id.tvPesquisar);
+        tvPesquisar.addTextChangedListener(new TextWatcher() {
+            final android.os.Handler handler = new android.os.Handler();
+            Runnable runnable;
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                handler.removeCallbacks(runnable);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.getFilter().filter(tvPesquisar.getText());
+                    }
+                };
+                handler.postDelayed(runnable,500);
+            }
+        });
+
         racas = new ArrayList<>();
 
         lv = findViewById(R.id.listview);
 
-        final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,racas);
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, racas);
         lv.setAdapter(adapter);
 
         // Instantiate the RequestQueue.
@@ -61,13 +104,12 @@ public class MainActivity extends AppCompatActivity {
                         try {
                             JSONArray jsonArray = response.getJSONArray("message");
 
-                            for(int i = 0; i < jsonArray.length(); i++){
+                            for (int i = 0; i < jsonArray.length(); i++) {
                                 racas.add(jsonArray.get(i).toString());
-
                             }
 
                             adapter.notifyDataSetChanged();
-                        }catch (Exception e){
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
 
@@ -79,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
 
                     public void onErrorResponse(VolleyError error) {
                         // TODO: Handle error
-                        Log.e("erro","Não deu "+error.getMessage());
+                        Log.e("erro", "Não deu " + error.getMessage());
                     }
                 });
 
@@ -95,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
 
-                        try{
+                        try {
 
                             String subraca = "";
 
@@ -104,24 +146,24 @@ public class MainActivity extends AppCompatActivity {
 
                             JSONArray jsonArray = message.getJSONArray(raca);
 
-                            for(int i = 0; i<jsonArray.length(); i++){
-                                subraca+= jsonArray.get(i).toString()+",";
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                subraca += jsonArray.get(i).toString() + ",";
                             }
 
-                            if(!subraca.equals("")){
-                                Intent i = new Intent(MainActivity.this,Sub_raca.class);
-                                i.putExtra("raca",raca);
-                                i.putExtra("subRaca",subraca);
+                            if (!subraca.equals("")) {
+                                Intent i = new Intent(MainActivity.this, Sub_raca.class);
+                                i.putExtra("raca", raca);
+                                i.putExtra("subRaca", subraca);
                                 startActivity(i);
 
-                            }else{
+                            } else {
                                 Intent i = new Intent(MainActivity.this, ImagemActivity.class);
-                                i.putExtra("raca",raca);
+                                i.putExtra("raca", raca);
                                 startActivity(i);
 
                             }
-                        }catch(Exception e ){
-                            Log.e("Erro",e.getMessage());
+                        } catch (Exception e) {
+                            Log.e("Erro", e.getMessage());
                         }
 
                     }
@@ -142,11 +184,42 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
         SharedPreferences foto = getSharedPreferences("Foto", MODE_PRIVATE);
-        String url = foto.getString("ultima","");
+        String url = foto.getString("ultima", "");
         ImageView ultima = findViewById(R.id.imageView2);
 
-        if(!url.equals("")){
+        if (!url.equals("")) {
             Picasso.get().load(url).into(ultima);
         }
     }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                String key = constraint.toString();
+                if (key.isEmpty()) {
+                    listaFiltrada = racas;
+                }else {
+                    List<String> filtrados = new ArrayList<String>();
+                    for (String s: racas){
+                        if (s.contains(key)){
+                            filtrados.add(s);
+                        }
+                    }
+                }
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = listaFiltrada;
+                return filterResults;
+
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                listaFiltrada = (ArrayList<String>) results.values;
+            }
+        };
+    }
+
 }
