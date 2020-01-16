@@ -1,11 +1,13 @@
 package com.example.cachorros.Activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +20,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.cachorros.R;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -32,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private RequestQueue queue;
     private String raca;
     private final int SUB_RACA = 2222;
+    private Intent in;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,18 +107,18 @@ public class MainActivity extends AppCompatActivity {
                             for(int i = 0; i<jsonArray.length(); i++){
                                 subraca+= jsonArray.get(i).toString()+",";
                             }
-                            
+
                             if(!subraca.equals("")){
                                 Intent i = new Intent(MainActivity.this,Sub_raca.class);
                                 i.putExtra("raca",raca);
                                 i.putExtra("subRaca",subraca);
                                 startActivity(i);
-                                finish();
+
                             }else{
                                 Intent i = new Intent(MainActivity.this, ImagemActivity.class);
                                 i.putExtra("raca",raca);
                                 startActivity(i);
-                                finish();
+
                             }
                         }catch(Exception e ){
                             Log.e("Erro",e.getMessage());
@@ -124,7 +128,6 @@ public class MainActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
                     }
                 });
 
@@ -134,4 +137,16 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        SharedPreferences foto = getSharedPreferences("Foto", MODE_PRIVATE);
+        String url = foto.getString("ultima","");
+        ImageView ultima = findViewById(R.id.imageView2);
+
+        if(!url.equals("")){
+            Picasso.get().load(url).into(ultima);
+        }
+    }
 }

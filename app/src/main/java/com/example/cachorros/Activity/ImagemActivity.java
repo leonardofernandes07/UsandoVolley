@@ -3,6 +3,7 @@ package com.example.cachorros.Activity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
@@ -50,11 +51,10 @@ public class ImagemActivity extends AppCompatActivity {
         JsonObjectRequest request = new JsonObjectRequest(0, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-
-
                 try {
-                String img = response.get("message").toString();
-                Picasso.get().load(img).into(imageView);
+                    String img = response.get("message").toString();
+                    Picasso.get().load(img).into(imageView);
+                    mostrar(img);
 
                 }catch (Exception e ){
                     Log.e("AAAA",e.getMessage());
@@ -70,4 +70,13 @@ public class ImagemActivity extends AppCompatActivity {
         queue.add(request);
 
     }
+
+    public void mostrar(String img){
+        SharedPreferences foto = getSharedPreferences("Foto", MODE_PRIVATE);
+        SharedPreferences.Editor edit = foto.edit();
+        edit.putString("ultima", img);
+        edit.apply();
+    }
+
+
 }
