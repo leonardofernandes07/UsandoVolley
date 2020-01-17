@@ -2,6 +2,7 @@ package com.example.cachorros.Activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements Filterable {
     private Intent in;
     private ArrayAdapter<String> adapter;
     private ArrayList<String> listaFiltrada = new ArrayList<>();
+    private ArrayList<String> favoritos = new ArrayList<>();
 
     private EditText tvPesquisar;
 
@@ -176,7 +178,21 @@ public class MainActivity extends AppCompatActivity implements Filterable {
 
             public boolean onItemLongClick(AdapterView<?> arg0, View v, int index, long arg3) {
                 // TODO Auto-generated method stub
-                String str=lv.getItemAtPosition(index).toString();
+                String racaClicada = racas.get(index);
+                if (favoritos.indexOf(racaClicada) > -1){
+                    // REMOVO DO FAVORITOS
+                    favoritos.remove(racaClicada);
+                    // TIRO O BG
+                    v.setBackgroundColor(getResources().getColor(R.color.backgroud_app));
+                    Log.e("Remove","Removeu do Array");
+                }else{
+                    // ADD O FAVORITOS
+                    favoritos.add(racaClicada);
+                    // ADD O BG
+                    v.setBackgroundColor(Color.rgb(122,89,102));
+                    Log.e("Add","Adiciona Array");
+                }
+                String str = lv.getItemAtPosition(index).toString();
                 Log.e("Test", "Selecionado");
                 return true;
             }
