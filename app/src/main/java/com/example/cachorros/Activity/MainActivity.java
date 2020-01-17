@@ -55,20 +55,15 @@ public class MainActivity extends AppCompatActivity implements Filterable {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-
         tvPesquisar = findViewById(R.id.tvPesquisar);
         tvPesquisar.addTextChangedListener(new TextWatcher() {
             final android.os.Handler handler = new android.os.Handler();
             Runnable runnable;
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
                 handler.removeCallbacks(runnable);
             }
 
@@ -174,6 +169,16 @@ public class MainActivity extends AppCompatActivity implements Filterable {
                 });
 
                 queue.add(request);
+            }
+        });
+
+        lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+            public boolean onItemLongClick(AdapterView<?> arg0, View v, int index, long arg3) {
+                // TODO Auto-generated method stub
+                String str=lv.getItemAtPosition(index).toString();
+                Log.e("Test", "Selecionado");
+                return true;
             }
         });
 
