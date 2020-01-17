@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/backgroud_app"
     android:gravity="center"
     android:orientation="vertical"
     tools:context=".Activity.Sub_raca">
@@ -25,7 +26,9 @@
         android:drawableLeft="@drawable/ic_search_black_24dp"
         android:ems="10"
         android:hint="Pesquisar"
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        android:textColor="@android:color/white"
+        android:textColorHint="@android:color/white" />
 
     <ListView
         android:id="@+id/listview"
