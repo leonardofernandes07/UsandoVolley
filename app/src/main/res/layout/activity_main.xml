@@ -22,10 +22,10 @@
         android:id="@+id/tvPesquisar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_search_black_24dp"
         android:ems="10"
         android:hint="Pesquisar"
-        android:inputType="textPersonName"
-        android:text="Name" />
+        android:inputType="textPersonName" />
 
     <ListView
         android:id="@+id/listview"
