@@ -17,6 +17,7 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements Filterable {
     private ArrayList<String> favoritos = new ArrayList<>();
 
     private EditText tvPesquisar;
+    private Button button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,12 +60,11 @@ public class MainActivity extends AppCompatActivity implements Filterable {
         setContentView(R.layout.activity_main);
         setTitle("Raça Principal");
 
-        Button button = findViewById(R.id.button);
+        button = findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),Favoritos.class);
-                startActivity(intent);
+                salvar();
             }
         });
 
@@ -187,12 +188,14 @@ public class MainActivity extends AppCompatActivity implements Filterable {
                 // TODO Auto-generated method stub
                 String racaClicada = racas.get(index);
                 if (favoritos.indexOf(racaClicada) > -1){
+                    Toast.makeText(MainActivity.this, "Removido nos Favoritos", Toast.LENGTH_SHORT).show();
                     // REMOVO DO FAVORITOS
                     favoritos.remove(racaClicada);
                     // TIRO O BG
                     v.setBackgroundColor(getResources().getColor(R.color.backgroud_app));
                     Log.e("Remove","Removeu do Array");
                 }else{
+                    Toast.makeText(MainActivity.this, "Adicionado nos Favoritos", Toast.LENGTH_SHORT).show();
                     // ADD O FAVORITOS
                     favoritos.add(racaClicada);
                     // ADD O BG
@@ -205,7 +208,15 @@ public class MainActivity extends AppCompatActivity implements Filterable {
         });
 
     }
-
+    private void salvar(){
+        if(favoritos.size() == 0){
+            button.setClickable(false);
+        }else {
+            button.setClickable(true);
+            Intent i = new Intent(getApplicationContext(),Favoritos.class);
+            startActivity(i);
+        }
+    }
     private void salvaSharedPreferences() {
         JSONArray favoritoson = new JSONArray(favoritos);
 
