@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
@@ -35,6 +36,7 @@ import org.json.JSONObject;
 import java.lang.reflect.Array;
 import java.security.Key;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements Filterable {
@@ -44,8 +46,6 @@ public class MainActivity extends AppCompatActivity implements Filterable {
     private ListView lv;
     private RequestQueue queue;
     private String raca;
-    private final int SUB_RACA = 2222;
-    private Intent in;
     private ArrayAdapter<String> adapter;
     private ArrayList<String> listaFiltrada = new ArrayList<>();
     private ArrayList<String> favoritos = new ArrayList<>();
@@ -56,6 +56,15 @@ public class MainActivity extends AppCompatActivity implements Filterable {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Button button = findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),Favoritos.class);
+                startActivity(intent);
+            }
+        });
 
         tvPesquisar = findViewById(R.id.tvPesquisar);
         tvPesquisar.addTextChangedListener(new TextWatcher() {
@@ -114,8 +123,6 @@ public class MainActivity extends AppCompatActivity implements Filterable {
                 }, new Response.ErrorListener() {
 
                     @Override
-
-
                     public void onErrorResponse(VolleyError error) {
                         // TODO: Handle error
                         Log.e("erro", "Não deu " + error.getMessage());
@@ -139,7 +146,6 @@ public class MainActivity extends AppCompatActivity implements Filterable {
                             String subraca = "";
 
                             JSONObject message = response.getJSONObject("message");
-
 
                             JSONArray jsonArray = message.getJSONArray(raca);
 
@@ -192,12 +198,23 @@ public class MainActivity extends AppCompatActivity implements Filterable {
                     v.setBackgroundColor(Color.rgb(122,89,102));
                     Log.e("Add","Adiciona Array");
                 }
-                String str = lv.getItemAtPosition(index).toString();
+                salvaSharedPreferences();
                 Log.e("Test", "Selecionado");
                 return true;
             }
         });
 
+    }
+
+    private void salvaSharedPreferences() {
+        JSONArray favoritoson = new JSONArray(favoritos);
+
+        String jsonString = favoritoson.toString();
+
+        SharedPreferences Sfavoritos = getSharedPreferences("Foto", MODE_PRIVATE);
+        SharedPreferences.Editor SEditorfavoritos = Sfavoritos.edit();
+        SEditorfavoritos.putString("Favoritos", jsonString);
+        SEditorfavoritos.apply();
     }
 
     @Override

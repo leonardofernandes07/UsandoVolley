@@ -5,17 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backgroud_app"
-    android:gravity="top"
+    android:gravity="center"
     android:orientation="vertical"
     tools:context=".Activity.Favoritos">
-    <TextView
-        android:id="@+id/lblRaca"
-        android:layout_width="410dp"
-        android:layout_height="39dp"
-        android:gravity="center"
-        android:text="Cachorro aqui"
-        android:textSize="24sp"
-        android:textStyle="bold" />
 
     <ImageView
         android:id="@+id/imageView3"
@@ -23,8 +15,8 @@
         android:layout_height="200dp" />
 
     <ListView
-        android:id="@+id/listaSubRaca"
+        android:id="@+id/lisfavoritos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    </LinearLayout>
+</LinearLayout>

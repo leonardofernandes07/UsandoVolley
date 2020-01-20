@@ -9,15 +9,14 @@
     android:orientation="vertical"
     tools:context=".Activity.Sub_raca">
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_marginStart="100dp"
-        android:layout_marginLeft="100dp"
-        android:layout_marginTop="48dp"
-        android:layout_marginEnd="104dp"
-        android:layout_marginRight="104dp" />
+    <Button
+        android:id="@+id/button"
+        android:layout_width="152dp"
+        android:layout_height="wrap_content"
+        android:autoText="false"
+        android:background="@color/backgroud_app"
+        android:drawableLeft="@drawable/ic_stars_black_24dp"
+        android:text="Favoritos" />
 
     <EditText
         android:id="@+id/tvPesquisar"
@@ -29,6 +28,16 @@
         android:inputType="textPersonName"
         android:textColor="@android:color/white"
         android:textColorHint="@android:color/white" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="104dp"
+        android:layout_marginRight="104dp" />
 
     <ListView
         android:id="@+id/listview"
