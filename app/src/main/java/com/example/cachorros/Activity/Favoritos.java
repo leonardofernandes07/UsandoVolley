@@ -44,6 +44,7 @@ public class Favoritos extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favoritos);
         listView = findViewById(R.id.lisfavoritos);
+        setTitle("Favoritos");
 
         i = getIntent();
         raca = i.getStringExtra("raca");

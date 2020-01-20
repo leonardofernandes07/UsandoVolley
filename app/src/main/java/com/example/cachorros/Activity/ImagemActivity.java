@@ -32,6 +32,7 @@ public class ImagemActivity extends AppCompatActivity {
         setContentView(R.layout.activity_imagem);
         i = getIntent();
         raca = i.getStringExtra("raca");
+        setTitle("Imagem Dog");
 
         queue = Volley.newRequestQueue(this);
 

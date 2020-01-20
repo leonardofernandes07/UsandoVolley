@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements Filterable {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setTitle("Raça Principal");
 
         Button button = findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
@@ -195,7 +196,6 @@ public class MainActivity extends AppCompatActivity implements Filterable {
                     // ADD O FAVORITOS
                     favoritos.add(racaClicada);
                     // ADD O BG
-                    v.setBackgroundColor(Color.rgb(122,89,102));
                     Log.e("Add","Adiciona Array");
                 }
                 salvaSharedPreferences();
