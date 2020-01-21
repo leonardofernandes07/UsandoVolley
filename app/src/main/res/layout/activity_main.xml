@@ -16,7 +16,8 @@
         android:autoText="false"
         android:background="@color/backgroud_app"
         android:drawableLeft="@drawable/ic_stars_black_24dp"
-        android:text="Favoritos" />
+        android:text="Favoritos"
+        android:visibility="visible" />
 
     <EditText
         android:id="@+id/tvPesquisar"
