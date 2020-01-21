@@ -64,7 +64,12 @@ public class MainActivity extends AppCompatActivity implements Filterable {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                salvar();
+                if(favoritos.size() == 0){
+                    Toast.makeText(MainActivity.this, "Lista de favoritos vazia", Toast.LENGTH_SHORT).show();
+                }else {
+                    Intent i = new Intent(MainActivity.this, Favoritos.class);
+                    startActivity(i);
+                }
             }
         });
 
@@ -207,15 +212,6 @@ public class MainActivity extends AppCompatActivity implements Filterable {
             }
         });
 
-    }
-    private void salvar(){
-        if(favoritos.size() == 0){
-            button.setClickable(false);
-        }else {
-            button.setClickable(true);
-            Intent i = new Intent(getApplicationContext(),Favoritos.class);
-            startActivity(i);
-        }
     }
     private void salvaSharedPreferences() {
         JSONArray favoritoson = new JSONArray(favoritos);
